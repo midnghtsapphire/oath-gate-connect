@@ -1,1 +1,1 @@
-"""Server package for Ordain.church."""\n
+"""Server package for Ordain.church."""

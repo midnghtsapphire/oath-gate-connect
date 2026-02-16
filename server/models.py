@@ -6,7 +6,7 @@ from server.database import Base
 
 class User(Base):
     __tablename__ = "users"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, index=True, nullable=False)
     hashed_password = Column(String(255), nullable=True)
@@ -17,12 +17,14 @@ class User(Base):
     phone = Column(String(50), nullable=True)
     is_active = Column(Boolean, default=True)
     is_verified = Column(Boolean, default=False)
+    ordination_date = Column(DateTime(timezone=True), nullable=True)
+    ordination_tier = Column(String(50), default="basic")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
 class Subscription(Base):
     __tablename__ = "subscriptions"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
     tier = Column(String(50), default="free")
@@ -31,4 +33,14 @@ class Subscription(Base):
     status = Column(String(50), default="active")
     current_period_start = Column(DateTime(timezone=True), nullable=True)
     current_period_end = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+class CeremonyScript(Base):
+    __tablename__ = "ceremony_scripts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    category = Column(String(100), nullable=False)
+    content = Column(Text, nullable=False)
+    is_premium = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

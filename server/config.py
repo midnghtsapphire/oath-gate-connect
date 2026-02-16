@@ -1,35 +1,36 @@
 """Configuration for Ordain.church."""
+import os
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 
 class Settings(BaseSettings):
     APP_NAME: str = "Ordain.church"
-    APP_URL: str = "http://localhost:8001"
-    DATABASE_URL: str = "postgresql://appuser:password@db:5432/oathgate"
-    JWT_SECRET: str = "change-me-to-a-random-secret"
+    APP_URL: str = os.getenv("APP_URL", "http://localhost:8080")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./ordainchurch.db")
+    JWT_SECRET: str = os.getenv("JWT_SECRET", "ordainchurch-jwt-secret-change-in-production")
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRATION_MINUTES: int = 1440
-    GOOGLE_CLIENT_ID: str = ""
-    GOOGLE_CLIENT_SECRET: str = ""
-    OPENAI_API_KEY: str = ""
-    REDIS_URL: str = "redis://redis:6379/0"
-    
+    GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
+    GOOGLE_CLIENT_SECRET: str = os.getenv("GOOGLE_CLIENT_SECRET", "")
+    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+    REDIS_URL: str = os.getenv("REDIS_URL", "")
+
     # Dual-mode Stripe
-    STRIPE_MODE: str = "test"
-    STRIPE_TEST_SECRET_KEY: str = ""
-    STRIPE_LIVE_SECRET_KEY: str = ""
-    STRIPE_TEST_PUBLISHABLE_KEY: str = ""
-    STRIPE_LIVE_PUBLISHABLE_KEY: str = ""
-    STRIPE_WEBHOOK_SECRET: str = ""
-    
+    STRIPE_MODE: str = os.getenv("STRIPE_MODE", "test")
+    STRIPE_TEST_SECRET_KEY: str = os.getenv("STRIPE_TEST_SECRET_KEY", "")
+    STRIPE_LIVE_SECRET_KEY: str = os.getenv("STRIPE_LIVE_SECRET_KEY", "")
+    STRIPE_TEST_PUBLISHABLE_KEY: str = os.getenv("STRIPE_TEST_PUBLISHABLE_KEY", "")
+    STRIPE_LIVE_PUBLISHABLE_KEY: str = os.getenv("STRIPE_LIVE_PUBLISHABLE_KEY", "")
+    STRIPE_WEBHOOK_SECRET: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+
     @property
     def STRIPE_SECRET_KEY(self) -> str:
         return self.STRIPE_LIVE_SECRET_KEY if self.STRIPE_MODE == "live" else self.STRIPE_TEST_SECRET_KEY
-    
+
     @property
     def STRIPE_PUBLISHABLE_KEY(self) -> str:
         return self.STRIPE_LIVE_PUBLISHABLE_KEY if self.STRIPE_MODE == "live" else self.STRIPE_TEST_PUBLISHABLE_KEY
-    
+
     class Config:
         env_file = ".env"
         extra = "allow"
