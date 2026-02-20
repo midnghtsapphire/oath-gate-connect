@@ -5,14 +5,22 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     APP_NAME: str = "Ordain.church"
-    APP_URL: str = os.getenv("APP_URL", "http://localhost:8080")
+    APP_URL: str = os.getenv("APP_URL", "http://localhost:8001")
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./ordainchurch.db")
     JWT_SECRET: str = os.getenv("JWT_SECRET", "ordainchurch-jwt-secret-change-in-production")
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRATION_MINUTES: int = 1440
     GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
     GOOGLE_CLIENT_SECRET: str = os.getenv("GOOGLE_CLIENT_SECRET", "")
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+    
+    # Apple Sign-In
+    APPLE_CLIENT_ID: str = os.getenv("APPLE_CLIENT_ID", "")
+    APPLE_CLIENT_SECRET: str = os.getenv("APPLE_CLIENT_SECRET", "")
+    APPLE_TEAM_ID: str = os.getenv("APPLE_TEAM_ID", "")
+    APPLE_KEY_ID: str = os.getenv("APPLE_KEY_ID", "")
+    
+    # OpenRouter (for AI ceremony generation)
+    OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
     REDIS_URL: str = os.getenv("REDIS_URL", "")
 
     # Dual-mode Stripe

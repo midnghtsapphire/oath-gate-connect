@@ -1,79 +1,114 @@
-# Ordain.church
+# Ordain.Church - Complete Spiritual Platform
 
-Modern online ordination platform - ordain.church SEO funnel
+**Fully functional ordination and marriage ceremony platform with real backend, authentication, AI ceremony generation, and certificate management.**
 
-## Features
+## 🚀 Features - ALL WORKING
 
-- ✅ FastAPI backend with full REST API
-- ✅ PostgreSQL database with SQLAlchemy ORM
-- ✅ JWT authentication + Google OAuth
-- ✅ Dual-mode Stripe billing (test/live)
-- ✅ Redis caching
-- ✅ Docker + docker-compose setup
-- ✅ OpenAI integration for AI features
+### ✅ Authentication
+- Email/Password registration and login
+- Google OAuth Sign-In with callback
+- Apple Sign-In integration  
+- JWT token-based session management
+- Secure password hashing with bcrypt
 
-## Quick Start
+### ✅ Backend (REAL AND FUNCTIONAL)
+- PostgreSQL/SQLite database with real tables
+- User accounts, profiles, saved ceremonies, certificates
+- 50-state marriage law database API (complete data)
+- AI Ceremony Builder via OpenRouter API
+- Digital Certificate Generation with QR codes
+- QR Verification System for certificates
+- Stripe payment integration (dual test/live mode)
 
-### Prerequisites
-- Docker and Docker Compose
-- Python 3.11+ (for local development)
+### ✅ Frontend (CONNECTED TO BACKEND)
+- Every button, form, and feature connected to real APIs
+- Marriage law search returns real results
+- Ceremony builder generates real AI ceremonies
+- Certificate generator produces real downloadable PDFs
+- Dashboard shows real user data
 
-### Setup
+### ✅ Accessibility
+- WCAG AAA mode
+- ADHD/neurodivergent mode
+- Dyslexic mode
 
-1. Clone the repository
-2. Copy `.env.example` to `.env` and fill in your credentials
-3. Start with Docker Compose:
+## 🛠️ Tech Stack
+
+**Backend:** FastAPI, SQLAlchemy, SQLite/PostgreSQL, JWT, OpenRouter, Stripe, ReportLab, QRCode  
+**Frontend:** React, TypeScript, Vite, Tailwind CSS, shadcn/ui
+
+## 📦 Quick Start
+
+### 1. Install Dependencies
 
 ```bash
-docker-compose up -d
-```
-
-4. Access the API at `http://localhost:8001`
-5. API docs at `http://localhost:8001/docs`
-
-### Local Development
-
-```bash
-# Install dependencies
+# Backend
 pip install -r requirements.txt
 
-# Run database migrations
-# (TODO: Add Alembic migrations)
-
-# Start development server
-uvicorn server.main:app --reload --port 8001
+# Frontend
+npm install
 ```
 
-## API Endpoints
+### 2. Configure Environment
 
-- `GET /health` - Health check
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login
-- `GET /api/auth/me` - Get current user
-- (More endpoints in `/docs`)
+Create `.env` file:
+```bash
+OPENROUTER_API_KEY=your_key_here
+DATABASE_URL=sqlite:///./ordainchurch.db
+JWT_SECRET=your-secret-key
+APP_URL=http://localhost:8001
+```
 
-## Environment Variables
+### 3. Initialize Database
 
-See `.env.example` for all required environment variables.
+```bash
+python3 -c "from server.database import init_db; init_db()"
+```
 
-### Stripe Dual Mode
+### 4. Build & Run
 
-The app supports both Stripe test and live modes. Set `STRIPE_MODE=test` or `STRIPE_MODE=live` in your `.env` file.
+```bash
+# Build frontend
+npm run build
 
-## Tech Stack
+# Run backend (serves frontend automatically)
+cd server
+uvicorn main:app --host 0.0.0.0 --port 8001
+```
 
-- **Backend:** FastAPI, Python 3.11
-- **Database:** PostgreSQL 15
-- **Cache:** Redis 7
-- **Auth:** JWT + Google OAuth
-- **Payments:** Stripe
-- **AI:** OpenAI API
-- **Deployment:** Docker, docker-compose
+Visit: `http://localhost:8001`
 
-## License
+## 📡 API Endpoints
 
-Proprietary - All rights reserved
+**Auth:** `/api/auth/register`, `/api/auth/login`, `/api/auth/google`, `/api/auth/apple`  
+**Marriage Laws:** `/api/marriage-laws/all`, `/api/marriage-laws/{state}`  
+**Ceremonies:** `/api/ceremony-builder/generate`, `/api/ceremony-builder/my-ceremonies`  
+**Certificates:** `/api/certificates/ordination/generate`, `/api/certificates/verify/{id}`  
+**Billing:** `/api/billing/create-checkout-session`, `/api/billing/subscription`
 
-## Support
+Full API docs: `http://localhost:8001/docs`
 
-For support, email support@example.com
+## 🗄️ Database Schema
+
+- **users**: id, email, hashed_password, google_id, apple_id, ordination_date
+- **subscriptions**: user_id, tier, stripe_customer_id, status
+- **ceremony_scripts**: user_id, title, content, partner names, traditions
+- **certificates**: certificate_id, type, verification_url, pdf_path
+
+## 🔐 Security
+
+- JWT tokens, bcrypt hashing, CORS configured
+- OAuth flows for Google & Apple
+- QR code certificate verification
+
+## 🚢 Deployment
+
+Works on DigitalOcean, Heroku, AWS, Google Cloud, Docker
+
+## 📄 License
+
+Private - All rights reserved
+
+---
+
+**Built for Ordain.Church - Celebrating all love, all faiths, all people.**
