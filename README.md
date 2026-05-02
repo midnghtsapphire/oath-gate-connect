@@ -112,3 +112,12 @@ Private - All rights reserved
 ---
 
 **Built for Ordain.Church - Celebrating all love, all faiths, all people.**
+
+---
+
+## Test
+
+| Feature | Status |
+|---------|--------|
+| Feature | ✅ Ready |
+
