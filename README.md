@@ -1,5 +1,9 @@
 # Ordain.Church - Complete Spiritual Platform
 
+
+<!-- AUTO-PACKAGE-BADGES:START -->
+
+<!-- AUTO-PACKAGE-BADGES:END -->
 **Fully functional ordination and marriage ceremony platform with real backend, authentication, AI ceremony generation, and certificate management.**
 
 ## 🚀 Features - ALL WORKING
