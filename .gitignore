@@ -7,12 +7,41 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies / build
 node_modules
 dist
 dist-ssr
+static
 *.local
 
-# Editor directories and files
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local databases and runtime artifacts
+*.db
+*.sqlite
+*.sqlite3
+ordainchurch.db
+server/data/*.pdf
+server/data/qrcodes/
+server/data/certificates/
+
+# Backups / editor
+*.backup
 .vscode/*
 !.vscode/extensions.json
 .idea

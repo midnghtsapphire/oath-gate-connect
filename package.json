@@ -1,14 +1,16 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "oath-gate-connect",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "echo \"Frontend unit tests not yet configured; backend: pytest\" && exit 0",
+    "test:backend": "python -m pytest -q"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

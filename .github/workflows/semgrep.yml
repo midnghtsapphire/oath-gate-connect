@@ -1,0 +1,57 @@
+# DISABLED 2026-07-16 — CodeQL provides equivalent SAST coverage (see .github/workflows/codeql.yml).
+# Semgrep removed from PR/push/schedule to avoid duplicate scanning. Manual run only via workflow_dispatch.
+name: Semgrep SAST
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+jobs:
+  semgrep:
+    name: semgrep
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep:1.161.0
+    if: (github.actor != 'dependabot[bot]')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Mark workspace safe (avoid 'dubious ownership' from container UID mismatch)
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - name: Run Semgrep scan (OSS rule packs)
+        run: |
+          semgrep scan \
+            --config=p/security-audit \
+            --config=p/secrets \
+            --config=p/owasp-top-ten \
+            --config=p/cwe-top-25 \
+            --config=p/github-actions \
+            --config=p/dockerfile \
+            --sarif --sarif-output=semgrep.sarif \
+            --metrics=off \
+            --no-error \
+            || true  # don't fail the job; we surface findings via SARIF
+      - name: Upload SARIF to GitHub Code Scanning
+        if: hashFiles('semgrep.sarif') != ''
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+      - name: Semgrep blocking gate (ERROR severity)
+        # 2026-05-21 (Claude): the SARIF upload above is advisory; this step
+        # actually blocks the merge on high-severity security + secret findings.
+        # Only ERROR-severity findings fail the job; warnings stay advisory.
+        run: |
+          semgrep scan \
+            --config=p/secrets \
+            --config=p/security-audit \
+            --severity=ERROR \
+            --error \
+            --metrics=off
+    timeout-minutes: 30
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"

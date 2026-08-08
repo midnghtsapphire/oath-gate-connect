@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "Ordain.church"
     APP_URL: str = os.getenv("APP_URL", "http://localhost:8001")
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./ordainchurch.db")
-    JWT_SECRET: str = os.getenv("JWT_SECRET", "ordainchurch-jwt-secret-change-in-production")
+    JWT_SECRET: str = os.getenv("JWT_SECRET", "dev-only-change-me")  # override in production
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRATION_MINUTES: int = 1440
     GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
