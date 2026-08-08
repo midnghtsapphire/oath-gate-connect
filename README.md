@@ -1,127 +1,133 @@
-# Ordain.Church - Complete Spiritual Platform
+# Oath Gate Connect (Ordain.Church)
 
+Fully functional ordination and marriage ceremony platform with a FastAPI backend,
+React/Vite frontend, authentication, AI ceremony generation, and certificate management.
 
-<!-- AUTO-PACKAGE-BADGES:START -->
+## Live Deployment
 
-<!-- AUTO-PACKAGE-BADGES:END -->
-**Fully functional ordination and marriage ceremony platform with real backend, authentication, AI ceremony generation, and certificate management.**
+Production URL is configured per environment via `APP_URL`.
 
-## 🚀 Features - ALL WORKING
+- Local API + static: `http://localhost:8001`
+- Local Vite dev server: `http://localhost:8080`
+- OpenAPI docs (local): `http://localhost:8001/docs`
+- Health check: `GET /api/health`
 
-### ✅ Authentication
-- Email/Password registration and login
-- Google OAuth Sign-In with callback
-- Apple Sign-In integration  
-- JWT token-based session management
-- Secure password hashing with bcrypt
+> When a public Vercel/DigitalOcean URL is provisioned, replace this section with the
+> verified live URL (Definition of Done: live URL in README).
 
-### ✅ Backend (REAL AND FUNCTIONAL)
-- PostgreSQL/SQLite database with real tables
-- User accounts, profiles, saved ceremonies, certificates
-- 50-state marriage law database API (complete data)
-- AI Ceremony Builder via OpenRouter API
-- Digital Certificate Generation with QR codes
-- QR Verification System for certificates
-- Stripe payment integration (dual test/live mode)
+## Features
 
-### ✅ Frontend (CONNECTED TO BACKEND)
-- Every button, form, and feature connected to real APIs
-- Marriage law search returns real results
-- Ceremony builder generates real AI ceremonies
-- Certificate generator produces real downloadable PDFs
-- Dashboard shows real user data
+### Authentication
 
-### ✅ Accessibility
-- WCAG AAA mode
-- ADHD/neurodivergent mode
-- Dyslexic mode
+- Email/password registration and login
+- Google OAuth and Apple Sign-In callbacks
+- JWT session tokens with bcrypt password hashing
 
-## 🛠️ Tech Stack
+### Backend
 
-**Backend:** FastAPI, SQLAlchemy, SQLite/PostgreSQL, JWT, OpenRouter, Stripe, ReportLab, QRCode  
-**Frontend:** React, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- SQLite (local) or PostgreSQL (Docker/production)
+- 50-state marriage law API
+- AI ceremony builder via OpenRouter
+- Digital certificates with QR verification
+- Stripe checkout (test/live dual mode)
 
-## 📦 Quick Start
+### Frontend
 
-### 1. Install Dependencies
+- React + TypeScript + Vite + Tailwind + shadcn/ui
+- Ceremony builder, certificate generator, accessibility modes
+
+## Tech stack
+
+| Layer | Stack |
+| --- | --- |
+| Backend | FastAPI, SQLAlchemy, JWT, OpenRouter, Stripe, ReportLab |
+| Frontend | React 18, TypeScript, Vite, Tailwind, shadcn/ui |
+| Ops | Docker multi-stage build, docker-compose, GitHub Actions |
+
+## Quick start
+
+### 1. Dependencies
 
 ```bash
-# Backend
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-
-# Frontend
-npm install
+npm ci
 ```
 
-### 2. Configure Environment
+### 2. Environment
 
-Create `.env` file:
 ```bash
-OPENROUTER_API_KEY=your_key_here
-DATABASE_URL=sqlite:///./ordainchurch.db
-JWT_SECRET=your-secret-key
-APP_URL=http://localhost:8001
+cp .env.example .env
+# set JWT_SECRET and OPENROUTER_API_KEY at minimum
 ```
 
-### 3. Initialize Database
+### 3. Database
 
 ```bash
-python3 -c "from server.database import init_db; init_db()"
+python -c "from server.database import init_db; init_db()"
 ```
 
-### 4. Build & Run
+### 4. Run
 
 ```bash
-# Build frontend
+# Frontend dev (optional, port 8080)
+npm run dev
+
+# API (serves built frontend from dist/ or static/ when present)
 npm run build
-
-# Run backend (serves frontend automatically)
-cd server
-uvicorn main:app --host 0.0.0.0 --port 8001
+uvicorn server.main:app --host 0.0.0.0 --port 8001
 ```
 
-Visit: `http://localhost:8001`
+Visit `http://localhost:8001` and API docs at `/docs`.
 
-## 📡 API Endpoints
+### Docker
 
-**Auth:** `/api/auth/register`, `/api/auth/login`, `/api/auth/google`, `/api/auth/apple`  
-**Marriage Laws:** `/api/marriage-laws/all`, `/api/marriage-laws/{state}`  
-**Ceremonies:** `/api/ceremony-builder/generate`, `/api/ceremony-builder/my-ceremonies`  
-**Certificates:** `/api/certificates/ordination/generate`, `/api/certificates/verify/{id}`  
-**Billing:** `/api/billing/create-checkout-session`, `/api/billing/subscription`
+```bash
+docker compose up --build
+# app on http://localhost:8001
+```
 
-Full API docs: `http://localhost:8001/docs`
+## API surface
 
-## 🗄️ Database Schema
+| Area | Paths |
+| --- | --- |
+| Auth | `/api/auth/register`, `/api/auth/login`, `/api/auth/google`, `/api/auth/apple` |
+| Marriage laws | `/api/marriage-laws/all`, `/api/marriage-laws/{state}` |
+| Ceremonies | `/api/ceremony-builder/generate`, `/api/ceremony-builder/my-ceremonies` |
+| Certificates | `/api/certificates/ordination/generate`, `/api/certificates/verify/{id}` |
+| Billing | `/api/billing/create-checkout-session`, `/api/billing/subscription` |
+| Health | `/api/health` |
 
-- **users**: id, email, hashed_password, google_id, apple_id, ordination_date
-- **subscriptions**: user_id, tier, stripe_customer_id, status
-- **ceremony_scripts**: user_id, title, content, partner names, traditions
-- **certificates**: certificate_id, type, verification_url, pdf_path
+## Tests & CI
 
-## 🔐 Security
+```bash
+python -m pytest -q
+npm run build
+```
 
-- JWT tokens, bcrypt hashing, CORS configured
-- OAuth flows for Google & Apple
-- QR code certificate verification
+GitHub Actions on every PR:
 
-## 🚢 Deployment
+- **CI** — frontend build + backend pytest
+- **AI PR Review (OpenRouter)**
+- **Jules PR Reviewer**
+- **Semgrep SAST**
+- **CodeQL** (actions, JavaScript/TypeScript, Python)
 
-Works on DigitalOcean, Heroku, AWS, Google Cloud, Docker
+## Security
 
-## 📄 License
+- Explicit CORS allow-list (`CORS_ORIGINS` / `APP_URL`) — no wildcard with credentials
+- Secrets only via environment variables (see `.env.example`)
+- `.env`, local databases, and `__pycache__` are gitignored
+- Dependabot enabled for npm, pip, and GitHub Actions
 
-Private - All rights reserved
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## License
+
+Private — all rights reserved.
 
 ---
 
-**Built for Ordain.Church - Celebrating all love, all faiths, all people.**
-
----
-
-## Test
-
-| Feature | Status |
-|---------|--------|
-| Feature | ✅ Ready |
-
+Built for Ordain.Church — celebrating all love, all faiths, all people.
