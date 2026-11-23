@@ -11,7 +11,7 @@ stripe==7.10.0
 openai==3.46.0
 qrcode[pil]==7.4.2
 httpx==0.26.0
-python-dotenv==1.0.1
+python-dotenv==1.2.4
 aiofiles==23.2.1
 email-validator==2.3.0
 reportlab==5.0.0
