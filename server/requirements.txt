@@ -9,5 +9,5 @@ python-multipart==0.0.32
 stripe==7.8.0
 python-dotenv==1.2.4
 qrcode[pil]==7.4.2
-reportlab==5.0.0
+reportlab==5.1.1
 openai==3.46.0
